@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Penjualan Pakaian</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div>
+        <h1>Dashboard Penjualan Pakaian</h1>
+        <p>Kelola produk, stok terjual, margin, dan laba bersih.</p>
+      </div>
+      <button id="openFormBtn" class="btn btn-primary">+ Tambah Produk</button>
+    </header>
+
+    <section class="summary">
+      <div class="card"><span>Total Produk</span><strong id="totalProduk">0</strong></div>
+      <div class="card"><span>Jumlah Terjual</span><strong id="totalTerjual">0</strong></div>
+      <div class="card"><span>Total Penjualan</span><strong id="totalPenjualan">Rp0</strong></div>
+      <div class="card"><span>Laba Bersih</span><strong id="totalLaba">Rp0</strong></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Daftar Pakaian</h2>
+        <input id="searchInput" type="search" placeholder="Cari pakaian...">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Nama Pakaian</th>
+              <th>Kategori</th>
+              <th>Harga Beli</th>
+              <th>Harga Jual</th>
+              <th>Stok</th>
+              <th>Terjual</th>
+              <th>Margin/pcs</th>
+              <th>Laba Bersih</th>
+              <th>Deskripsi</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyState" class="empty-state">Belum ada produk.</div>
+    </section>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2 id="modalTitle">Tambah Produk</h2>
+        <button id="closeFormBtn" class="icon-btn">&times;</button>
+      </div>
+
+      <form id="productForm">
+        <input type="hidden" id="editId">
+
+        <div class="form-group">
+          <label>Foto Pakaian</label>
+          <div class="photo-upload">
+            <img id="photoPreview" src="" alt="Preview foto" class="photo-preview hidden">
+            <div class="upload-area">
+              <input id="foto" type="file" accept="image/*">
+              <small>JPG/PNG/WebP. Foto disimpan di browser.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nama">Nama Pakaian</label>
+          <input id="nama" type="text" placeholder="Contoh: Kaos Oversize" required>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <input id="kategori" type="text" placeholder="Contoh: Kaos">
+          </div>
+          <div class="form-group">
+            <label for="hargaBeli">Harga Beli / pcs</label>
+            <input id="hargaBeli" type="number" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="hargaJual">Harga Jual / pcs</label>
+            <input id="hargaJual" type="number" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="stok">Stok</label>
+            <input id="stok" type="number" min="0" value="0" required>
+          </div>
+          <div class="form-group">
+            <label for="jumlahTerjual">Jumlah Terjual</label>
+            <input id="jumlahTerjual" type="number" min="0" value="0" required>
+          </div>
+        </div>
+
+        <div class="margin-preview">
+          <div><span>Margin / pcs</span><strong id="previewMargin">Rp0</strong></div>
+          <div><span>Laba Bersih</span><strong id="previewLaba">Rp0</strong></div>
+        </div>
+
+        <div class="form-group">
+          <label for="deskripsi">Deskripsi</label>
+          <textarea id="deskripsi" rows="4" placeholder="Contoh: Cotton combed 24s, ukuran M-XL."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="cancelBtn" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
