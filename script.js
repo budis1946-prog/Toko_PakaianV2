@@ -4,7 +4,7 @@
 // Tanpa fetch CORS: baca = JSONP, tulis = HTML form POST
 // ==========================================
 
-const API_URL = "GANTI_DENGAN_URL_WEB_APP_ANDA";
+const API_URL = "https://script.google.com/macros/s/AKfycbweEXOtJcC8nyoQchVsdZ1tLKuq-ZRrUZZqAX-1xhzfQN0yjblrMrcMqJnS_12OwuG3/exec";
 
 const $ = (id) => document.getElementById(id);
 
