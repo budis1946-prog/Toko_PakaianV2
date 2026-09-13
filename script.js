@@ -4,7 +4,7 @@
 // Tanpa fetch CORS: baca = JSONP, tulis = HTML form POST
 // ==========================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbweEXOtJcC8nyoQchVsdZ1tLKuq-ZRrUZZqAX-1xhzfQN0yjblrMrcMqJnS_12OwuG3/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxueowN-_eP747P65fnLgTahoAbH9YWdRhApIHpBWZSlQfyuZChe7pRXkE1JZNu8xB-/exec";
 
 const $ = (id) => document.getElementById(id);
 
