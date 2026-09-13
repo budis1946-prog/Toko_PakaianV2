@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function ensureApi() {
-  if (!API_URL || API_URL.includes("GANTI_DENGAN")) {
+  if (!API_URL || API_URL.includes("https://script.google.com/macros/s/AKfycbxueowN-_eP747P65fnLgTahoAbH9YWdRhApIHpBWZSlQfyuZChe7pRXkE1JZNu8xB-/exec")) {
     alert("Isi API_URL di script.js dengan URL Web App Google Apps Script.");
     return false;
   }
