@@ -256,6 +256,62 @@ function render() {
       0
     )
   );
+
+  function updateDashboard() {
+  const totalProduk = products.length;
+
+  const jumlahTerjual = products.reduce(
+    (total, produk) =>
+      total + (Number(produk.terjual) || 0),
+    0
+  );
+
+  const totalPenjualan = products.reduce(
+    (total, produk) =>
+      total +
+      (Number(produk.hargaJual) || 0) *
+      (Number(produk.terjual) || 0),
+    0
+  );
+
+  // Total modal seluruh barang
+  const totalModal = products.reduce(
+    (total, produk) => {
+      const hargaBeli = Number(produk.hargaBeli) || 0;
+      const stok = Number(produk.stok) || 0;
+      const terjual = Number(produk.terjual) || 0;
+
+      return total + (hargaBeli * (stok + terjual));
+    },
+    0
+  );
+
+  const labaBersih = products.reduce(
+    (total, produk) =>
+      total +
+      (
+        ((Number(produk.hargaJual) || 0) -
+        (Number(produk.hargaBeli) || 0)) *
+        (Number(produk.terjual) || 0)
+      ),
+    0
+  );
+
+  document.getElementById('totalProduk').textContent =
+    totalProduk;
+
+  document.getElementById('jumlahTerjual').textContent =
+    jumlahTerjual;
+
+  document.getElementById('totalPenjualan').textContent =
+    formatRupiah(totalPenjualan);
+
+  document.getElementById('totalModal').textContent =
+    formatRupiah(totalModal);
+
+  document.getElementById('labaBersih').textContent =
+    formatRupiah(labaBersih);
+}
 }
 
 // =============================
