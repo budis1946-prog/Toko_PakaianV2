@@ -427,49 +427,92 @@ function previewPhoto() {
 
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
+
+    if (!file) {
+      reject(new Error("File foto tidak ditemukan."));
+      return;
+    }
+
+    // Maksimal file asli 5 MB
+    if (file.size > 5 * 1024 * 1024) {
+      reject(
+        new Error(
+          "Foto terlalu besar. Maksimal 5 MB."
+        )
+      );
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = () => {
+
       const img = new Image();
 
       img.onload = () => {
-        const MAX_SIZE = 1200;
+
+        const MAX_SIZE = 800;
 
         let width = img.width;
         let height = img.height;
 
         if (width > MAX_SIZE || height > MAX_SIZE) {
+
           if (width > height) {
-            height = Math.round((height / width) * MAX_SIZE);
+
+            height = Math.round(
+              (height / width) * MAX_SIZE
+            );
+
             width = MAX_SIZE;
+
           } else {
-            width = Math.round((width / height) * MAX_SIZE);
+
+            width = Math.round(
+              (width / height) * MAX_SIZE
+            );
+
             height = MAX_SIZE;
           }
         }
 
         const canvas = document.createElement("canvas");
+
         canvas.width = width;
         canvas.height = height;
 
         const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
 
-        // Kompres supaya pengiriman ke Apps Script lebih ringan
-        resolve(
-          canvas.toDataURL("image/jpeg", 0.82)
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          width,
+          height
         );
+
+        // Kompres lebih kecil agar aman dikirim ke Apps Script
+        const compressed = canvas.toDataURL(
+          "image/jpeg",
+          0.65
+        );
+
+        resolve(compressed);
       };
 
       img.onerror = () => {
-        reject(new Error("Foto tidak dapat dibaca."));
+        reject(
+          new Error("Foto tidak dapat dibaca.")
+        );
       };
 
       img.src = reader.result;
     };
 
     reader.onerror = () => {
-      reject(new Error("Gagal membaca file foto."));
+      reject(
+        new Error("Gagal membaca file foto.")
+      );
     };
 
     reader.readAsDataURL(file);
