@@ -148,50 +148,45 @@ function getImageUrl(value) {
 
   const url = String(value).trim();
 
-  // Kalau sudah URL thumbnail
-  if (url.includes("drive.google.com/thumbnail")) {
-    return url;
-  }
-
-  // Kalau Base64
+  // Base64
   if (url.startsWith("data:image/")) {
     return url;
   }
 
+  // Ambil File ID dari URL Google Drive
   let fileId = "";
 
-  // /file/d/FILE_ID/view
-  let match = url.match(/\/file\/d\/([-\w]{20,})/i);
+  let match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
 
   if (match) {
     fileId = match[1];
   }
 
-  // ?id=FILE_ID
   if (!fileId) {
-    match = url.match(/[?&]id=([-\w]{20,})/i);
+    match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
 
     if (match) {
       fileId = match[1];
     }
   }
 
-  // /d/FILE_ID
   if (!fileId) {
-    match = url.match(/\/d\/([-\w]{20,})/i);
+    match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
 
     if (match) {
       fileId = match[1];
     }
   }
 
-  if (fileId) {
-    return "https://drive.google.com/thumbnail?id=" +
-      encodeURIComponent(fileId) +
-      "&sz=w800";
+  if (!fileId) {
+    return "";
   }
 
-  return "";
+  // URL gambar Google Drive
+  return (
+    "https://drive.google.com/uc?export=view&id=" +
+    encodeURIComponent(fileId)
+  );
 }
 // =============================
 // RENDER
@@ -219,15 +214,15 @@ function render() {
       <tr>
         <td>
           ${
-  p.gambar
-    ? `<img
-         class="product-img"
-         src="${escapeAttr(getImageUrl(p.gambar))}"
-         alt="${escapeAttr(p.nama || "Foto produk")}"
-         loading="lazy"
-         onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80?text=Error'"
-       >`
-    : '<div class="product-img"></div>'
+      p.gambar
+      ? `<img
+           class="product-img"
+           src="${escapeAttr(getImageUrl(p.gambar))}"
+           alt="${escapeAttr(p.nama || "Foto produk")}"
+           loading="lazy"
+           onerror="this.onerror=null; this.src=''; this.alt='Gambar gagal dimuat';"
+         >`
+      : '<div class="product-img"></div>'
 }
         </td>
         <td><strong>${escapeHtml(p.nama)}</strong></td>
