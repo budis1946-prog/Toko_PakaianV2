@@ -153,15 +153,18 @@ function getImageUrl(value) {
     return url;
   }
 
-  // Ambil File ID dari URL Google Drive
   let fileId = "";
 
+  // URL:
+  // https://drive.google.com/thumbnail?id=FILE_ID&sz=w800
   let match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
 
   if (match) {
     fileId = match[1];
   }
 
+  // URL:
+  // https://drive.google.com/file/d/FILE_ID/view
   if (!fileId) {
     match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
 
@@ -170,6 +173,8 @@ function getImageUrl(value) {
     }
   }
 
+  // URL:
+  // https://drive.google.com/d/FILE_ID
   if (!fileId) {
     match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
 
@@ -179,14 +184,14 @@ function getImageUrl(value) {
   }
 
   if (!fileId) {
+    console.error("File ID Google Drive tidak ditemukan:", url);
     return "";
   }
 
-  // URL gambar Google Drive
-  return (
-    "https://drive.google.com/uc?export=view&id=" +
-    encodeURIComponent(fileId)
-  );
+  // FORMAT BARU UNTUK MENAMPILKAN GAMBAR
+  return "https://lh3.googleusercontent.com/d/" +
+         encodeURIComponent(fileId) +
+         "=w500";
 }
 // =============================
 // RENDER
@@ -214,13 +219,13 @@ function render() {
       <tr>
         <td>
           ${
-      p.gambar
+     p.gambar
       ? `<img
            class="product-img"
            src="${escapeAttr(getImageUrl(p.gambar))}"
            alt="${escapeAttr(p.nama || "Foto produk")}"
            loading="lazy"
-           onerror="this.onerror=null; this.src=''; this.alt='Gambar gagal dimuat';"
+           onerror="this.onerror=null; this.alt='Foto tidak tersedia';"
          >`
       : '<div class="product-img"></div>'
 }
