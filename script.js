@@ -262,7 +262,7 @@ const totalModal = products.reduce(
     const stok = Number(p.stok) || 0;
     const terjual = Number(p.terjual) || 0;
 
-    return sum + (hargaBeli * (stok + terjual));
+    return sum + (hargaBeli * stok);
   },
   0
 );
