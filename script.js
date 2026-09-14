@@ -247,6 +247,15 @@ function render() {
     )
   );
 
+    $("totalBeli").textContent = rupiah(
+    products.reduce(
+      (sum, p) =>
+        sum +
+        (Number(p.hargaBeli) || 0) * (Number(p.Stok) || 0),
+      0
+    )
+  );
+
   $("totalLaba").textContent = rupiah(
     products.reduce(
       (sum, p) =>
