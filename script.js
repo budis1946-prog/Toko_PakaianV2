@@ -12,7 +12,7 @@
 // ============================================================
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycby-YlkfI-Z1bwiK0ujaY-ArD0BSgw5BlNVqYFmeB0IGA09DHUFOEDEjBVBmVFesZ3d_KQ/exec";
+  "https://script.google.com/macros/s/AKfycby-YlkfI-Z1bwiK0ujaY-ArD0BSgw5BlNVqYFmeB0IGA09DHUFOEDEJbVBmVFesZ3d_KQ/exec";
 
 const $ = (id) => document.getElementById(id);
 
