@@ -288,7 +288,7 @@ function openEdit(id) {
   $("jumlahTerjual").value = p.terjual || 0;
   $("deskripsi").value = p.deskripsi || "";
 
-  $("photoPreview").src = p.gambar || "";
+  $("photoPreview").src = getImageUrl(p.gambar);
   $("photoPreview").classList.toggle("hidden", !p.gambar);
 
   $("modal").classList.add("show");
