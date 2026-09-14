@@ -275,16 +275,18 @@ function render() {
   );
 
   // Total modal seluruh barang
-  const totalModal = products.reduce(
-    (total, produk) => {
-      const hargaBeli = Number(produk.hargaBeli) || 0;
-      const stok = Number(produk.stok) || 0;
-      const terjual = Number(produk.terjual) || 0;
+const totalModal = products.reduce(
+  (sum, p) => {
+    const hargaBeli = Number(p.hargaBeli) || 0;
+    const stok = Number(p.stok) || 0;
+    const terjual = Number(p.terjual) || 0;
 
-      return total + (hargaBeli * (stok + terjual));
-    },
-    0
-  );
+    return sum + (hargaBeli * (stok + terjual));
+  },
+  0
+);
+
+$("totalModal").textContent = rupiah(totalModal);
 
   const labaBersih = products.reduce(
     (total, produk) =>
