@@ -251,7 +251,7 @@ function render() {
     products.reduce(
       (sum, p) =>
         sum +
-        (Number(p.hargaBeli) || 0) * (Number(p.Stok) || 0),
+        (Number(p.hargaBeli) || 0) * (Number(p.totalProduk) || 0),
       0
     )
   );
