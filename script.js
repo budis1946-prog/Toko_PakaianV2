@@ -152,26 +152,57 @@ function jsonpRequest(params, timeout = 15000) {
 // LOAD PRODUCTS
 // ============================================================
 
-async function loadProducts() {
-  if (!ensureApi()) return;
+function loadProducts() {
+  const callbackName =
+    'jsonpCallback_' + Date.now();
 
-  $("productTableBody").innerHTML =
-    '<tr><td colspan="11">Memuat data...</td></tr>';
+  window[callbackName] = function(response) {
+    try {
+      if (!response || !response.success) {
+        throw new Error(
+          response?.message || 'Gagal mengambil data'
+        );
+      }
 
-  try {
-    const response = await jsonpRequest({
-      action: "list"
-    });
+      products = response.data || [];
 
-    products = Array.isArray(response.data)
-      ? response.data
-      : [];
+      renderProducts();
+      updateDashboard();
 
-    render();
+    } catch (error) {
+      console.error(error);
+      showError(
+        'Gagal memuat data: ' + error.message
+      );
+    } finally {
+      delete window[callbackName];
+      const script = document.getElementById(callbackName);
 
-  } catch (err) {
-    showLoadError(err.message);
-  }
+      if (script) {
+        script.remove();
+      }
+    }
+  };
+
+  const script = document.createElement('script');
+
+  script.id = callbackName;
+
+  script.src =
+    API_URL +
+    '?action=list&callback=' +
+    encodeURIComponent(callbackName);
+
+  script.onerror = function() {
+    delete window[callbackName];
+    script.remove();
+
+    showError(
+      'Gagal menghubungi Google Apps Script.'
+    );
+  };
+
+  document.body.appendChild(script);
 }
 
 function showLoadError(message) {
