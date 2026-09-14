@@ -142,33 +142,52 @@ function submitToApi(action, payload) {
     }, 1200);
   });
 }
+
 function getImageUrl(value) {
   if (!value) return "";
 
   const url = String(value).trim();
 
-  // Jika berupa gambar Base64
+  // Base64
   if (url.startsWith("data:image/")) {
     return url;
   }
 
-  // Jika sudah URL thumbnail Google Drive
-  if (url.includes("drive.google.com/thumbnail")) {
-    return url;
-  }
-
   // Ambil File ID Google Drive
-  const match =
-    url.match(/\/file\/d\/([-\w]{20,})/i) ||
-    url.match(/[?&]id=([-\w]{20,})/i) ||
-    url.match(/\/d\/([-\w]{20,})/i);
+  let fileId = "";
+
+  // https://drive.google.com/file/d/FILE_ID/view
+  let match = url.match(/\/file\/d\/([-\w]{20,})/i);
 
   if (match && match[1]) {
-    return "https://drive.google.com/thumbnail?id=" +
-           encodeURIComponent(match[1]) +
-           "&sz=w500";
+    fileId = match[1];
   }
 
+  // https://drive.google.com/open?id=FILE_ID
+  if (!fileId) {
+    match = url.match(/[?&]id=([-\w]{20,})/i);
+
+    if (match && match[1]) {
+      fileId = match[1];
+    }
+  }
+
+  // https://drive.google.com/uc?id=FILE_ID
+  if (!fileId) {
+    match = url.match(/\/d\/([-\w]{20,})/i);
+
+    if (match && match[1]) {
+      fileId = match[1];
+    }
+  }
+
+  // Gunakan URL Google Drive yang lebih cocok untuk <img>
+  if (fileId) {
+    return "https://drive.google.com/uc?export=view&id=" +
+      encodeURIComponent(fileId);
+  }
+
+  // Jika bukan URL Drive, gunakan apa adanya
   return url;
 }
 
@@ -204,7 +223,7 @@ function render() {
          src="${escapeAttr(getImageUrl(p.gambar))}"
          alt="${escapeAttr(p.nama || "Foto produk")}"
          loading="lazy"
-         onerror="this.style.display='none'"
+         onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80?text=No+Image'"
        >`
     : '<div class="product-img"></div>'
 }
