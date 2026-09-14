@@ -246,59 +246,7 @@ function render() {
       0
     )
   );
-
-   function hitungTotalPembelian() {
-  return products.reduce((total, produk) => {
-    const hargaBeli = Number(produk.hargaBeli) || 0;
-    const terjual = Number(produk.terjual) || 0;
-
-    return total + (hargaBeli * terjual);
-  }, 0);
-}
-
-  function updateDashboard() {
-  const totalProduk = products.length;
-
-  const jumlahTerjual = products.reduce(
-    (total, produk) => total + (Number(produk.terjual) || 0),
-    0
-  );
-
-  const totalPenjualan = products.reduce(
-    (total, produk) =>
-      total +
-      ((Number(produk.hargaJual) || 0) *
-       (Number(produk.terjual) || 0)),
-    0
-  );
-
-  const totalPembelian = hitungTotalPembelian();
-
-  const labaBersih = products.reduce(
-    (total, produk) =>
-      total +
-      (((Number(produk.hargaJual) || 0) -
-        (Number(produk.hargaBeli) || 0)) *
-       (Number(produk.terjual) || 0)),
-    0
-  );
-
-  document.getElementById('totalProduk').textContent =
-    totalProduk;
-
-  document.getElementById('jumlahTerjual').textContent =
-    jumlahTerjual;
-
-  document.getElementById('totalPembelian').textContent =
-    formatRupiah(totalPembelian);
-
-  document.getElementById('totalPenjualan').textContent =
-    formatRupiah(totalPenjualan);
-
-  document.getElementById('labaBersih').textContent =
-    formatRupiah(labaBersih);
-}
-
+  
   $("totalLaba").textContent = rupiah(
     products.reduce(
       (sum, p) =>
