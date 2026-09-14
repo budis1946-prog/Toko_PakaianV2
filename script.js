@@ -142,6 +142,35 @@ function submitToApi(action, payload) {
     }, 1200);
   });
 }
+function getImageUrl(value) {
+  if (!value) return "";
+
+  const url = String(value).trim();
+
+  // Jika berupa gambar Base64
+  if (url.startsWith("data:image/")) {
+    return url;
+  }
+
+  // Jika sudah URL thumbnail Google Drive
+  if (url.includes("drive.google.com/thumbnail")) {
+    return url;
+  }
+
+  // Ambil File ID Google Drive
+  const match =
+    url.match(/\/file\/d\/([-\w]{20,})/i) ||
+    url.match(/[?&]id=([-\w]{20,})/i) ||
+    url.match(/\/d\/([-\w]{20,})/i);
+
+  if (match && match[1]) {
+    return "https://drive.google.com/thumbnail?id=" +
+           encodeURIComponent(match[1]) +
+           "&sz=w500";
+  }
+
+  return url;
+}
 
 // =============================
 // RENDER
@@ -169,10 +198,16 @@ function render() {
       <tr>
         <td>
           ${
-            p.gambar
-              ? `<img class="product-img" src="${escapeAttr(p.gambar)}" alt="">`
-              : '<div class="product-img"></div>'
-          }
+  p.gambar
+    ? `<img
+         class="product-img"
+         src="${escapeAttr(getImageUrl(p.gambar))}"
+         alt="${escapeAttr(p.nama || "Foto produk")}"
+         loading="lazy"
+         onerror="this.style.display='none'"
+       >`
+    : '<div class="product-img"></div>'
+}
         </td>
         <td><strong>${escapeHtml(p.nama)}</strong></td>
         <td>${escapeHtml(p.kategori || "-")}</td>
