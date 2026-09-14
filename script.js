@@ -225,7 +225,7 @@ function render() {
          src="${escapeAttr(getImageUrl(p.gambar))}"
          alt="${escapeAttr(p.nama || "Foto produk")}"
          loading="lazy"
-         onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80?text=No+Image'"
+         onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80?text=Error'"
        >`
     : '<div class="product-img"></div>'
 }
