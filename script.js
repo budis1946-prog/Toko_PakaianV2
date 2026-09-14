@@ -256,25 +256,6 @@ function render() {
       0
     )
   );
-
-  function updateDashboard() {
-  const totalProduk = products.length;
-
-  const jumlahTerjual = products.reduce(
-    (total, produk) =>
-      total + (Number(produk.terjual) || 0),
-    0
-  );
-
-  const totalPenjualan = products.reduce(
-    (total, produk) =>
-      total +
-      (Number(produk.hargaJual) || 0) *
-      (Number(produk.terjual) || 0),
-    0
-  );
-
-  // Total modal seluruh barang
 const totalModal = products.reduce(
   (sum, p) => {
     const hargaBeli = Number(p.hargaBeli) || 0;
@@ -286,34 +267,7 @@ const totalModal = products.reduce(
   0
 );
 
-$("totalModal").textContent = rupiah(totalModal);
-
-  const labaBersih = products.reduce(
-    (total, produk) =>
-      total +
-      (
-        ((Number(produk.hargaJual) || 0) -
-        (Number(produk.hargaBeli) || 0)) *
-        (Number(produk.terjual) || 0)
-      ),
-    0
-  );
-
-  document.getElementById('totalProduk').textContent =
-    totalProduk;
-
-  document.getElementById('jumlahTerjual').textContent =
-    jumlahTerjual;
-
-  document.getElementById('totalPenjualan').textContent =
-    formatRupiah(totalPenjualan);
-
-  document.getElementById('totalModal').textContent =
-    formatRupiah(totalModal);
-
-  document.getElementById('labaBersih').textContent =
-    formatRupiah(labaBersih);
-}
+$("totalModal").textContent = rupiah(totalModal);  
 }
 
 // =============================
