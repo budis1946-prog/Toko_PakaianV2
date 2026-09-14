@@ -144,6 +144,7 @@ function submitToApi(action, payload) {
 }
 
 function getImageUrl(value) {
+
   if (!value) return "";
 
   const url = String(value).trim();
@@ -153,41 +154,53 @@ function getImageUrl(value) {
     return url;
   }
 
-  // Ambil File ID Google Drive
+  // Sudah thumbnail
+  if (url.includes("drive.google.com/thumbnail")) {
+    return url;
+  }
+
+  // Ambil ID Google Drive
   let fileId = "";
 
-  // https://drive.google.com/file/d/FILE_ID/view
-  let match = url.match(/\/file\/d\/([-\w]{20,})/i);
+  let match = url.match(
+    /\/file\/d\/([-\w]{20,})/i
+  );
 
-  if (match && match[1]) {
+  if (match) {
     fileId = match[1];
   }
 
-  // https://drive.google.com/open?id=FILE_ID
   if (!fileId) {
-    match = url.match(/[?&]id=([-\w]{20,})/i);
 
-    if (match && match[1]) {
+    match = url.match(
+      /[?&]id=([-\w]{20,})/i
+    );
+
+    if (match) {
       fileId = match[1];
     }
   }
 
-  // https://drive.google.com/uc?id=FILE_ID
   if (!fileId) {
-    match = url.match(/\/d\/([-\w]{20,})/i);
 
-    if (match && match[1]) {
+    match = url.match(
+      /\/d\/([-\w]{20,})/i
+    );
+
+    if (match) {
       fileId = match[1];
     }
   }
 
-  // Gunakan URL Google Drive yang lebih cocok untuk <img>
   if (fileId) {
-    return "https://drive.google.com/uc?export=view&id=" +
-      encodeURIComponent(fileId);
+
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      encodeURIComponent(fileId) +
+      "&sz=w800"
+    );
   }
 
-  // Jika bukan URL Drive, gunakan apa adanya
   return url;
 }
 
