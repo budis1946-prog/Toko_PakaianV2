@@ -144,48 +144,41 @@ function submitToApi(action, payload) {
 }
 
 function getImageUrl(value) {
-
   if (!value) return "";
 
   const url = String(value).trim();
 
-  // Base64
-  if (url.startsWith("data:image/")) {
-    return url;
-  }
-
-  // Sudah thumbnail
+  // Kalau sudah URL thumbnail
   if (url.includes("drive.google.com/thumbnail")) {
     return url;
   }
 
-  // Ambil ID Google Drive
+  // Kalau Base64
+  if (url.startsWith("data:image/")) {
+    return url;
+  }
+
   let fileId = "";
 
-  let match = url.match(
-    /\/file\/d\/([-\w]{20,})/i
-  );
+  // /file/d/FILE_ID/view
+  let match = url.match(/\/file\/d\/([-\w]{20,})/i);
 
   if (match) {
     fileId = match[1];
   }
 
+  // ?id=FILE_ID
   if (!fileId) {
-
-    match = url.match(
-      /[?&]id=([-\w]{20,})/i
-    );
+    match = url.match(/[?&]id=([-\w]{20,})/i);
 
     if (match) {
       fileId = match[1];
     }
   }
 
+  // /d/FILE_ID
   if (!fileId) {
-
-    match = url.match(
-      /\/d\/([-\w]{20,})/i
-    );
+    match = url.match(/\/d\/([-\w]{20,})/i);
 
     if (match) {
       fileId = match[1];
@@ -193,17 +186,13 @@ function getImageUrl(value) {
   }
 
   if (fileId) {
-
-    return (
-      "https://drive.google.com/thumbnail?id=" +
+    return "https://drive.google.com/thumbnail?id=" +
       encodeURIComponent(fileId) +
-      "&sz=w800"
-    );
+      "&sz=w800";
   }
 
-  return url;
+  return "";
 }
-
 // =============================
 // RENDER
 // =============================
