@@ -435,16 +435,6 @@ function fileToDataUrl(file) {
       return;
     }
 
-    // Maksimal file asli 5 MB
-    if (file.size > 5 * 1024 * 1024) {
-      reject(
-        new Error(
-          "Foto terlalu besar. Maksimal 5 MB."
-        )
-      );
-      return;
-    }
-
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -453,7 +443,8 @@ function fileToDataUrl(file) {
 
       img.onload = () => {
 
-        const MAX_SIZE = 800;
+        // Maksimal ukuran gambar setelah resize
+        const MAX_SIZE = 1000;
 
         let width = img.width;
         let height = img.height;
@@ -461,19 +452,14 @@ function fileToDataUrl(file) {
         if (width > MAX_SIZE || height > MAX_SIZE) {
 
           if (width > height) {
-
             height = Math.round(
               (height / width) * MAX_SIZE
             );
-
             width = MAX_SIZE;
-
           } else {
-
             width = Math.round(
               (width / height) * MAX_SIZE
             );
-
             height = MAX_SIZE;
           }
         }
@@ -493,18 +479,28 @@ function fileToDataUrl(file) {
           height
         );
 
-        // Kompres lebih kecil agar aman dikirim ke Apps Script
+        // Kompres menjadi JPG
         const compressed = canvas.toDataURL(
           "image/jpeg",
-          0.65
+          0.70
         );
+
+        // Pastikan hasil kompres tidak terlalu besar
+        if (compressed.length > 7000000) {
+          reject(
+            new Error(
+              "Foto masih terlalu besar setelah dikompres."
+            )
+          );
+          return;
+        }
 
         resolve(compressed);
       };
 
       img.onerror = () => {
         reject(
-          new Error("Foto tidak dapat dibaca.")
+          new Error("Foto tidak dapat dibaca oleh browser.")
         );
       };
 
