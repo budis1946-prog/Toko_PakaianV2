@@ -210,14 +210,14 @@ function render() {
 }
         </td>
         <td><strong>${escapeHtml(p.nama)}</strong></td>
-        <td>${escapeHtml(p.kategori || "-")}</td>
+        <td>${escapeHtml(p.deskripsi || "-")}</td>
         <td>${rupiah(p.hargaBeli)}</td>
         <td>${rupiah(p.hargaJual)}</td>
         <td>${Number(p.stok) || 0}</td>
         <td>${terjual}</td>
         <td>${rupiah(margin)}</td>
         <td>${rupiah(laba)}</td>
-        <td>${escapeHtml(p.deskripsi || "-")}</td>
+        <td>${escapeHtml(p.kategori || "-")}</td>
         <td>
           <button class="action-btn" onclick="openEdit('${escapeAttr(p.id)}')">
             Edit
