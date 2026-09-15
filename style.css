@@ -93,8 +93,8 @@ th {
   background: #fafbfc;
 }
 .product-img {
-  width: 520px;
-  height: 520px;
+  width: 150px;
+  height: 150px;
   border-radius: 10px;
   object-fit: cover;
   background: #eef1f5;
