@@ -193,7 +193,7 @@ th {
 }
 .photo-preview {
   width: 80px;
-  height: 800px;
+  height: 80px;
   object-fit: cover;
   border-radius: 12px;
   background: #eef1f5;
