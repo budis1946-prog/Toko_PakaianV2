@@ -192,8 +192,8 @@ th {
   align-items: center;
 }
 .photo-preview {
-  width: 100px;
-  height: 100px;
+  width: 1000px;
+  height: 1000px;
   object-fit: cover;
   border-radius: 12px;
   background: #eef1f5;
